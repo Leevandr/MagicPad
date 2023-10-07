@@ -1,10 +1,13 @@
 package org.example.service;
 
+
+import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 
-@RequiredArgsConstructor
+
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserRegistrationServiceImpl implements UserRegistrationService {
 
     private final UserRepository userRepository;
