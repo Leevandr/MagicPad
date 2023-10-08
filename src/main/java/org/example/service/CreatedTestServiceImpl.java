@@ -1,6 +1,6 @@
 package org.example.service;
 
-
+import com.google.inject.Inject;
 import org.example.model.CreatedTest;
 import org.example.model.Question;
 import org.example.model.TypeQuestion;
@@ -13,13 +13,12 @@ import java.util.stream.Collectors;
 
 public class CreatedTestServiceImpl implements CreatedTestService {
 
-
     private final CreatedTestRepository createdTestRepository;
 
+    @Inject
     public CreatedTestServiceImpl(CreatedTestRepository createdTestRepository) {
         this.createdTestRepository = createdTestRepository;
     }
-
 
     @Override
     public void createTest(CreatedTest createdTest) {
@@ -27,16 +26,16 @@ public class CreatedTestServiceImpl implements CreatedTestService {
                 || createdTest.getName().length() > 255 || createdTest.getName().length() < 3) {
             throw new IllegalArgumentException("Имя не может быть пустым или содержать больше 255 символов и меньше 3");
         }
-        if (createdTest.getDescription().length() > 255 || createdTest.getDescription().length() < 3) {
+        if (createdTest.getDescription() == null || createdTest.getDescription().length() > 255 || createdTest.getDescription().length() < 3) {
             throw new IllegalArgumentException("Описание не может содержать больше 255 символов и меньше 3");
         }
-        if (createdTest.getLink().length() > 20 || createdTest.getLink().length() < 3) {
+        if (createdTest.getLink() == null || createdTest.getLink().length() > 20 || createdTest.getLink().length() < 3) {
             throw new IllegalArgumentException("Ссылка не может содержать больше 20 символов и меньше 3");
-        }//если не вводит ни какую ссылку она генерируется автоматически но тут 3 символа пофиксить крч надо
-        if (createdTest.getQuestions().isEmpty()) {
+        }
+        if (createdTest.getQuestions() == null || createdTest.getQuestions().isEmpty()) {
             throw new IllegalArgumentException("Тест должен содержать хотя бы один вопрос");
         }
-        if (createdTest.getStudent().isEmpty()) {
+        if (createdTest.getStudent() == null || createdTest.getStudent().isEmpty()) {
             throw new IllegalArgumentException("Тест должен содержать хотя бы одного студента так как общедоступных тестов нет");
         }
         if (createdTest.getTimeDuration() == null || createdTest.getTimeDuration().isBefore(LocalTime.of(0, 1))) {
@@ -44,23 +43,20 @@ public class CreatedTestServiceImpl implements CreatedTestService {
         }
         for (Question question : createdTest.getQuestions()) {
             if (question.getTypeQuestion() == TypeQuestion.REVIEWED_QUESTIONS) {
-                if (createdTest.getQuestion().length() > 15000 || createdTest.getQuestion().isEmpty()
-                        || createdTest.getQuestion().isBlank()) {
-                    throw new IllegalArgumentException("Вопрос не может содержать больше 15000 " +
-                            "символов и должен содержать хотя бы один символ");
+                if (createdTest.getQuestion() == null || createdTest.getQuestion().length() > 15000 || createdTest.getQuestion().isEmpty() || createdTest.getQuestion().isBlank()) {
+                    throw new IllegalArgumentException("Вопрос не может содержать больше 15000 символов и должен содержать хотя бы один символ");
                 }
             } else {
-                if (createdTest.getQuestion().length() > 255 || createdTest.getQuestion().length() < 3) {
+                if (createdTest.getQuestion() == null || createdTest.getQuestion().length() > 255 || createdTest.getQuestion().length() < 3) {
                     throw new IllegalArgumentException("Вопрос не может содержать больше 255 символов и меньше 3");
                 }
             }
         }
-        if (createdTest.getAnswer().length() > 255 || createdTest.getAnswer().length() < 3) {
+        if (createdTest.getAnswer() == null || createdTest.getAnswer().length() > 255 || createdTest.getAnswer().length() < 3) {
             throw new IllegalArgumentException("Ответ не может содержать больше 255 символов и меньше 3");
         }
-        createdTestRepository.add(createdTest); // Ура наконец!
+        createdTestRepository.add(createdTest);
     }
-
 
 
     @Override
@@ -85,7 +81,6 @@ public class CreatedTestServiceImpl implements CreatedTestService {
                 .filter(test -> test.getTeacherId() == teacherId)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public void updateTest(CreatedTest createdTest, long teacherId) {
@@ -117,5 +112,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
         } else {
             throw new IllegalArgumentException("Тест с таким id не существует");
         }
+
     }
+
 }

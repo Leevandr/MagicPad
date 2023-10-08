@@ -2,10 +2,13 @@ package org.example;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.example.model.User;
+import org.example.model.CreatedTest;
 import org.example.module.BindModule;
-import org.example.service.UserAuthService;
-import org.example.service.UserRegistrationService;
+import org.example.service.CreatedTestService;
+
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -15,18 +18,42 @@ public class Main {
 
         injector = Guice.createInjector(new BindModule());
 
+        // Создаем сервис и репозиторий для тестов
+        CreatedTestService createdTestService = injector.getInstance(CreatedTestService.class);
 
-        UserRegistrationService registrationService = injector.getInstance(UserRegistrationService.class);
-        UserAuthService authService = injector.getInstance(UserAuthService.class);
+        // Создаем тесты
+        CreatedTest test1 = new CreatedTest(1, null, null, "What is the capital of France?", "Paris", true, LocalTime.of(0, 5), "Geography Quiz", "geography-quiz", "Test your knowledge of world capitals.", 1);
+        CreatedTest test2 = new CreatedTest(2, null, null, "What is the square root of 16?", "4", true, LocalTime.of(0, 10), "Math Quiz", "math-quiz", "Test your math skills.", 2);
 
+        // Добавляем тесты
+        createdTestService.createTest(test1);
+        createdTestService.createTest(test2);
 
-        User user = new User(1L, "levandr123123", "levandr", "lev", "ustimenko", false);
-        registrationService.registration(1L, user);
+        // Получаем все тесты и выводим информацию о них
+        List<CreatedTest> allTests = createdTestService.getAllTests(1);
+        for (CreatedTest test : allTests) {
+            System.out.println(test);
+        }
 
+        // Получаем тест по ID и выводим информацию о нем
+        Optional<CreatedTest> testById = createdTestService.getTestById(1, 1);
+        testById.ifPresent(System.out::println);
 
-         boolean isAuthenticated = authService.Auth("levandr", "levandr123123");
-         System.out.println(user.getLogin());
-         System.out.println(user.getPassword());
-         System.out.println("Auth successful: " + isAuthenticated);
+        // Обновляем тест
+        CreatedTest updatedTest = new CreatedTest(1, null, null, "What is the capital of France?", "Paris", true, LocalTime.of(0, 15), "Updated Geography Quiz", "updated-geography-quiz", "Updated description.", 1);
+        createdTestService.updateTest(updatedTest, 1);
+
+        // Повторно получаем тест по ID и выводим информацию о нем
+        testById = createdTestService.getTestById(1, 1);
+        testById.ifPresent(System.out::println);
+
+        // Удаляем тест по ID
+        createdTestService.deleteTest(2, 2);
+
+        // Повторно получаем все тесты и выводим информацию о них
+        allTests = createdTestService.getAllTests(1);
+        for (CreatedTest test : allTests) {
+            System.out.println(test);
+        }
     }
 }
