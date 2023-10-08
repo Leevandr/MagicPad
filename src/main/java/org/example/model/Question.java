@@ -1,9 +1,15 @@
 package org.example.model;
 
+
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Question {
-
-
-
 
 
     private TypeQuestion typeQuestion;
@@ -21,6 +27,8 @@ public class Question {
             case MULTIPLE_QUESTIONS:
                 this.typeAnswer = TypeAnswer.MULTIPLE;
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown typeQuestion: " + typeQuestion);
         }
     }
 }
