@@ -22,57 +22,54 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     @Override
     public void createTest(CreatedTest createdTest) {
-        if (createdTest.getName() == null || createdTest.getName().isEmpty() || createdTest.getName().isBlank()
-                || createdTest.getName().length() > 255 || createdTest.getName().length() < 3) {
-            throw new IllegalArgumentException("Имя не может быть пустым или содержать больше 255 символов и меньше 3");
-        }
-        if (createdTest.getDescription() == null || createdTest.getDescription().length() > 255 || createdTest.getDescription().length() < 3) {
-            throw new IllegalArgumentException("Описание не может содержать больше 255 символов и меньше 3");
-        }
-        if (createdTest.getLink() == null || createdTest.getLink().length() > 20 || createdTest.getLink().length() < 3) {
-            throw new IllegalArgumentException("Ссылка не может содержать больше 20 символов и меньше 3");
-        }
-        if (createdTest.getQuestions() == null || createdTest.getQuestions().isEmpty()) {
-            throw new IllegalArgumentException("Тест должен содержать хотя бы один вопрос");
-        }
-        if (createdTest.getStudent() == null || createdTest.getStudent().isEmpty()) {
-            throw new IllegalArgumentException("Тест должен содержать хотя бы одного студента так как общедоступных тестов нет");
-        }
-        if (createdTest.getTimeDuration() == null || createdTest.getTimeDuration().isBefore(LocalTime.of(0, 1))) {
-            throw new IllegalArgumentException("Тест должен длиться хотя бы 1 минуту");
-        }
+        Optional.ofNullable(createdTest.getName())
+                .filter(name -> !name.isBlank() && name.length() >= 3 && name.length() <= 255)
+                .orElseThrow(() -> new IllegalArgumentException("Имя не может быть пустым или содержать больше 255 символов и меньше 3"));
+
+        Optional.ofNullable(createdTest.getDescription())
+                .filter(desc -> desc.length() >= 3 && desc.length() <= 255)
+                .orElseThrow(() -> new IllegalArgumentException("Описание не может содержать больше 255 символов и меньше 3"));
+
+        Optional.ofNullable(createdTest.getLink())
+                .filter(link -> link.length() >= 3 && link.length() <= 20)
+                .orElseThrow(() -> new IllegalArgumentException("Ссылка не может содержать больше 20 символов и меньше 3"));
+
+        Optional.ofNullable(createdTest.getQuestions())
+                .filter(questions -> !questions.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Тест должен содержать хотя бы один вопрос"));
+
+        Optional.ofNullable(createdTest.getStudent())
+                .filter(student -> !student.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Тест должен содержать хотя бы одного студента так как общедоступных тестов нет"));
+
+        Optional.ofNullable(createdTest.getTimeDuration())
+                .filter(time -> !time.isBefore(LocalTime.of(0, 1)))
+                .orElseThrow(() -> new IllegalArgumentException("Тест должен длиться хотя бы 1 минуту"));
+
         for (Question question : createdTest.getQuestions()) {
             if (question.getTypeQuestion() == TypeQuestion.REVIEWED_QUESTIONS) {
-                if (createdTest.getQuestion() == null || createdTest.getQuestion().length() > 15000 || createdTest.getQuestion().isEmpty() || createdTest.getQuestion().isBlank()) {
-                    throw new IllegalArgumentException("Вопрос не может содержать больше 15000 символов и должен содержать хотя бы один символ");
-                }
+                Optional.ofNullable(createdTest.getQuestion())
+                        .filter(content -> !content.isEmpty() && !content.isBlank() && content.length() <= 15000)
+                        .orElseThrow(() -> new IllegalArgumentException("Вопрос не может содержать больше 15000 символов и должен содержать хотя бы один символ"));
             } else {
-                if (createdTest.getQuestion() == null || createdTest.getQuestion().length() > 255 || createdTest.getQuestion().length() < 3) {
-                    throw new IllegalArgumentException("Вопрос не может содержать больше 255 символов и меньше 3");
-                }
+                Optional.ofNullable(createdTest.getQuestion())
+                        .filter(content -> !content.isBlank() && content.length() >= 3 && content.length() <= 255)
+                        .orElseThrow(() -> new IllegalArgumentException("Вопрос не может содержать больше 255 символов и меньше 3"));
             }
         }
-        if (createdTest.getAnswer() == null || createdTest.getAnswer().length() > 255 || createdTest.getAnswer().length() < 3) {
-            throw new IllegalArgumentException("Ответ не может содержать больше 255 символов и меньше 3");
-        }
+
+        Optional.ofNullable(createdTest.getAnswer())
+                .filter(answer -> !answer.isBlank() && answer.length() >= 3 && answer.length() <= 255)
+                .orElseThrow(() -> new IllegalArgumentException("Ответ не может содержать больше 255 символов и меньше 3"));
+
         createdTestRepository.add(createdTest);
     }
-
 
     @Override
     public Optional<CreatedTest> getTestById(long id, long teacherId) {
         Optional<CreatedTest> testOptional = createdTestRepository.getById(id);
 
-        if (testOptional.isPresent()) {
-            CreatedTest test = testOptional.get();
-            if (test.getTeacherId() == teacherId) {
-                return Optional.of(test);
-            } else {
-                throw new IllegalArgumentException("Вы не имеете прав доступа к этому тесту");
-            }
-        } else {
-            return Optional.empty();
-        }
+        return testOptional.filter(test -> test.getTeacherId() == teacherId);
     }
 
     @Override
@@ -86,33 +83,25 @@ public class CreatedTestServiceImpl implements CreatedTestService {
     public void updateTest(CreatedTest createdTest, long teacherId) {
         Optional<CreatedTest> testOptional = createdTestRepository.getById(createdTest.getId());
 
-        if (testOptional.isPresent()) {
-            CreatedTest existingTest = testOptional.get();
+        testOptional.ifPresent(existingTest -> {
             if (existingTest.getTeacherId() == teacherId) {
                 createdTestRepository.update(createdTest);
             } else {
                 throw new IllegalArgumentException("Вы не имеете прав доступа к этому тесту");
             }
-        } else {
-            throw new IllegalArgumentException("Теста с таким id не существует");
-        }
+        });
     }
 
     @Override
     public void deleteTest(long id, long teacherId) {
         Optional<CreatedTest> testOptional = createdTestRepository.getById(id);
 
-        if (testOptional.isPresent()) {
-            CreatedTest existingTest = testOptional.get();
+        testOptional.ifPresent(existingTest -> {
             if (existingTest.getTeacherId() == teacherId) {
                 createdTestRepository.delete(id);
             } else {
                 throw new IllegalArgumentException("Вы не имеете прав доступа к этому тесту");
             }
-        } else {
-            throw new IllegalArgumentException("Тест с таким id не существует");
-        }
-
+        });
     }
-
 }
