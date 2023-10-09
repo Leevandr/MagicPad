@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,6 +16,9 @@ public class Question {
 
     private TypeQuestion typeQuestion;
     private TypeAnswer typeAnswer;
+
+    private List<String> questions;
+    private List<String> answer;
 
     public Question(TypeQuestion typeQuestion) {
         this.typeQuestion = typeQuestion;
