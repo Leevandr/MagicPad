@@ -36,4 +36,13 @@ public class Question {
                 throw new IllegalArgumentException("Unknown typeQuestion: " + typeQuestion);
         }
     }
+
+    public String toString() {
+        return "Question{" +
+                "typeQuestion=" + typeQuestion +
+                ", typeAnswer=" + typeAnswer +
+                ", questions=" + questions +
+                ", answer=" + answer +
+                '}';
+    }
 }

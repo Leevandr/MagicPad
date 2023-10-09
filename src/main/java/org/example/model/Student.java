@@ -8,7 +8,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Student {
     private final long id;
+    private final String name;
 
-    private final List<PassedTest> passedTests;
+
+
+
+
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
 }

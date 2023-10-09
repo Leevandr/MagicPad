@@ -74,12 +74,16 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private void validateStudent(List<Student> students) {
         Optional.ofNullable(students)
-                .filter(s -> !s.isEmpty())
-                .orElseThrow(() -> new IllegalArgumentException("Тест должен содержать хотя бы одного студента, так как общедоступных тестов нет"));
-    } //Тут сомневаюсь, перепроверить
+                .filter(List::isEmpty)
+                .ifPresentOrElse(
+                        s -> {throw new IllegalArgumentException("Тест должен содержать хотя бы одного студента, так как общедоступных тестов нет");},
+                        () -> {} // Нечего делать, если студентов нет
+                );
+    }
+
     private void validateTimeDuration(LocalTime timeDuration) {
         Optional.ofNullable(timeDuration)
-                .filter(time -> !time.isBefore(LocalTime.of(0, 1)))
+                .filter(time -> !time.isBefore(LocalTime.MIN))
                 .orElseThrow(() -> new IllegalArgumentException("Тест должен длиться хотя бы 1 минуту"));
     }
 
@@ -111,17 +115,14 @@ public class CreatedTestServiceImpl implements CreatedTestService {
     private void validateQuestionContent(String content, int maxLength) {
         Optional.ofNullable(content)
                 .filter(c -> !c.isBlank() && c.length() >= 3 && c.length() <= maxLength)
-                .orElseThrow(() -> new IllegalArgumentException("Вопрос не может содержать больше " + maxLength +" символов и меньше 3"));
+                .orElseThrow(() -> new IllegalArgumentException("Вопрос не может содержать больше " + maxLength + " символов и меньше 3"));
     }
 
     private void validateAnswers(List<String> answers) {
-        for (String answer : answers) {
-            Optional.ofNullable(answer)
-                    .filter(a -> !a.isBlank() && a.length() >= 3 && a.length() <= 255)
-                    .orElseThrow(() -> new IllegalArgumentException("Ответ не может содержать больше 255 символов и меньше 3"));
-        }
+        answers.forEach(answer -> Optional.ofNullable(answer)
+                .filter(a -> !a.isBlank() && a.length() >= 3 && a.length() <= 255)
+                .orElseThrow(() -> new IllegalArgumentException("Ответ не может содержать больше 255 символов и меньше 3")));
     }
-
 
 
     @Override
@@ -169,4 +170,6 @@ public class CreatedTestServiceImpl implements CreatedTestService {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         return now.toString() + "-" + uuid;
     }
+
+
 }

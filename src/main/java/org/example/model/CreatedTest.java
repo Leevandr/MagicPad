@@ -24,6 +24,19 @@ public class CreatedTest {
     private final long teacherId;
 
 
-
+    @Override
+    public String toString() {
+        return "CreatedTest{" +
+                "id=" + id +
+                ", questions=" + questions +
+                ", student=" + student +
+                ", isOpen=" + isOpen +
+                ", timeDuration=" + timeDuration +
+                ", name='" + name + '\'' +
+                ", link='" + link + '\'' +
+                ", description='" + description + '\'' +
+                ", teacherId=" + teacherId +
+                '}';
+    }
 }
 
