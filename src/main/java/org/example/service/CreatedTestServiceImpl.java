@@ -10,6 +10,7 @@ import org.example.repository.CreatedTestRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private final CreatedTestRepository createdTestRepository;
     private final ValidationTestService validationTestService;
+    final static DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     @Override
@@ -157,6 +159,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private String generateRandomLink() {
         LocalDateTime now = LocalDateTime.now();
+        String formattedString = now.format(CUSTOM_FORMATTER);
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         return now.toString() + "-" + uuid;
     }
