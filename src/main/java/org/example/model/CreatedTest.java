@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CreatedTest {
+public class CreatedTest implements Comparable<CreatedTest> {
 
     private long id;
     private List<Question> questions; // От сюда берем типы ответов и вопросов
@@ -38,5 +38,13 @@ public class CreatedTest {
                 ", teacherId=" + teacherId +
                 '}';
     }
+
+    //compareTo method for .sorted
+    //поменять на сортировку по дате создания
+    @Override
+    public int compareTo(CreatedTest o) {
+        return this.getName().compareTo(o.getName());
+    }
+
 }
 

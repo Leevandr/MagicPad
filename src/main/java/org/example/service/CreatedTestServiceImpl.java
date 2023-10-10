@@ -127,6 +127,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
     public List<CreatedTest> getAllTests(long teacherId) {
         return createdTestRepository.getAll().stream()
                 .filter(test -> test.getTeacherId() == teacherId)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
