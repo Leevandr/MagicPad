@@ -40,7 +40,7 @@ public class CreatedTest implements Comparable<CreatedTest> {
     }
 
     //compareTo method for .sorted
-    //поменять на сортировку по дате создания
+    //поменять на сортировку по дате создания теста
     @Override
     public int compareTo(CreatedTest o) {
         return this.getName().compareTo(o.getName());
