@@ -17,7 +17,7 @@ public class Question {
     private TypeQuestion typeQuestion;
     private TypeAnswer typeAnswer;
 
-    private List<String> questions;
+    private String content;
     private List<String> answer;
 
     public Question(TypeQuestion typeQuestion) {
@@ -41,7 +41,7 @@ public class Question {
         return "Question{" +
                 "typeQuestion=" + typeQuestion +
                 ", typeAnswer=" + typeAnswer +
-                ", questions=" + questions +
+                ", questions=" + content +
                 ", answer=" + answer +
                 '}';
     }

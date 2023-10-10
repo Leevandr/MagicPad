@@ -1,6 +1,7 @@
 package org.example.service;
 
 import com.google.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.example.model.CreatedTest;
 import org.example.model.Question;
 import org.example.model.Student;
@@ -14,14 +15,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
+
+@RequiredArgsConstructor(onConstructor = @__(@javax.inject.Inject))
 public class CreatedTestServiceImpl implements CreatedTestService {
 
     private final CreatedTestRepository createdTestRepository;
+    private final ValidationTestService validationTestService;
 
-    @Inject
-    public CreatedTestServiceImpl(CreatedTestRepository createdTestRepository) {
-        this.createdTestRepository = createdTestRepository;
-    }
 
     @Override
     public void createTest(CreatedTest createdTest) {
@@ -66,7 +67,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
                 .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new IllegalArgumentException("Тест должен содержать хотя бы один вопрос"));
         for (Question question : questionsList) {
-            Optional.ofNullable(question.getQuestions())
+            Optional.ofNullable(question.getContent())
                     .filter(list -> !list.isEmpty())
                     .orElseThrow(() -> new IllegalArgumentException("Каждый вопрос должен содержать хотя бы один пункт"));
         }
@@ -74,11 +75,8 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private void validateStudent(List<Student> students) {
         Optional.ofNullable(students)
-                .filter(List::isEmpty)
-                .ifPresentOrElse(
-                        s -> {throw new IllegalArgumentException("Тест должен содержать хотя бы одного студента, так как общедоступных тестов нет");},
-                        () -> {} // Нечего делать, если студентов нет
-                );
+                .filter(list -> !list.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("Тест должен быть назначен хотя бы одному студенту!"));
     }
 
     private void validateTimeDuration(LocalTime timeDuration) {
@@ -104,19 +102,11 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private void validateQuestionsContent(List<Question> questionsList) {
         for (Question question : questionsList) {
-            if (question.getTypeQuestion() == TypeQuestion.REVIEWED_QUESTIONS) {
-                question.getQuestions().forEach(q -> validateQuestionContent(q, 15000));
-            } else {
-                question.getQuestions().forEach(q -> validateQuestionContent(q, 255));
-            }
+            validationTestService.validateQuestionContent(question.getContent(), 255); // Используем 255 как maxLength
         }
     }
 
-    private void validateQuestionContent(String content, int maxLength) {
-        Optional.ofNullable(content)
-                .filter(c -> !c.isBlank() && c.length() >= 3 && c.length() <= maxLength)
-                .orElseThrow(() -> new IllegalArgumentException("Вопрос не может содержать больше " + maxLength + " символов и меньше 3"));
-    }
+
 
     private void validateAnswers(List<String> answers) {
         answers.forEach(answer -> Optional.ofNullable(answer)
