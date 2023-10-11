@@ -159,11 +159,6 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
 
     private String generateRandomLink() {
-        LocalDateTime now = LocalDateTime.now();
-        String formattedString = now.format(CUSTOM_FORMATTER);
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        return now.toString() + "-" + uuid;
+        return UUID.randomUUID().toString().substring(0, 8);
     }
-
-
 }

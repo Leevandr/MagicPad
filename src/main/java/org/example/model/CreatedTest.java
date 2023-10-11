@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class CreatedTest implements Comparable<CreatedTest> {
     private String link;
     private String description;
     private final long teacherId;
+    private final LocalDateTime createdDate = LocalDateTime.now();
+
 
 
     @Override
@@ -36,14 +39,14 @@ public class CreatedTest implements Comparable<CreatedTest> {
                 ", link='" + link + '\'' +
                 ", description='" + description + '\'' +
                 ", teacherId=" + teacherId +
+                ", createdDate=" + createdDate +
                 '}';
     }
 
-    //compareTo method for .sorted
-    //поменять на сортировку по дате создания теста
+    //compareTo method for .sorted() in CreatedTestServiceImpl
     @Override
     public int compareTo(CreatedTest o) {
-        return this.getName().compareTo(o.getName());
+        return this.getCreatedDate().compareTo(o.getCreatedDate());
     }
 
 }
