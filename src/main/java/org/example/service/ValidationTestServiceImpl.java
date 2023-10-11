@@ -1,11 +1,15 @@
 package org.example.service;
 
+import com.google.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.example.model.Question;
 import org.example.model.TypeAnswer;
 import org.example.model.TypeQuestion;
 
 import java.util.List;
+import java.util.Map;
 
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ValidationTestServiceImpl implements ValidationTestService {
 
     @Override
@@ -42,10 +46,10 @@ public class ValidationTestServiceImpl implements ValidationTestService {
 
         // Пример использования:
         List<Question> questions = List.of(
-                new Question(TypeQuestion.STRING_QUESTIONS, TypeAnswer.STRING, "What is your name?", List.of("John")),
-                new Question(TypeQuestion.REVIEWED_QUESTIONS, TypeAnswer.STRING, "Write a detailed review.", List.of("Great product!"))
+                new Question(TypeQuestion.STRING_QUESTIONS, TypeAnswer.STRING, "What is your name?", Map.of(1, "sdasdas", 2, "s32dasdasddas", 3, "23123asdas")),
+                new Question(TypeQuestion.REVIEWED_QUESTIONS, TypeAnswer.STRING, "Write a detailed review.",   Map.of(1, "dhgf", 2, "gfhf124", 3, "234jgfgd"))
         );
-
+        System.out.println(questions);
         service.validateQuestionsContent(questions, 255);
     }
 }

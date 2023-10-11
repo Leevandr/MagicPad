@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import org.example.model.CreatedTest;
 import org.example.model.Question;
 import org.example.model.Student;
-import org.example.model.TypeAnswer;
 import org.example.model.TypeQuestion;
 import org.example.module.BindModule;
 import org.example.service.CreatedTestService;
@@ -26,36 +25,24 @@ public class Main {
 
 
         //Создаем вопросы
-        Question question1 = new Question(TypeQuestion.CHECKBOX_QUESTIONS);
-
+        Student student = new Student(1, "levandr");
         // Создаем тест
-        CreatedTest createdTest = new CreatedTest(1,question1(), "Test", "Test", true, LocalTime.of(1, 30), 1);
+        CreatedTest createdTest = new CreatedTest(1, List.of(question1()), List.of(student), true, LocalTime.of(1, 30), "test", "123123", "12312313", 123);
+        System.out.println(createdTest);
+    }
 
-        }
 
-
-        public static Question question1() {
+    public static Question question1() {
         Question question1 = new Question(TypeQuestion.CHECKBOX_QUESTIONS);
         question1.setContent("Какие из этих языков являются статически типизированными?");
-            Map<Integer, String> answers1 = new HashMap<>(){{
-                put(1, "Java");
-                put(2, "Python");
-                put(3, "C#");
-                put(4, "C++");
-            }};
-        return question1;
-        }
-    public static Question question2() {
-        Question question1 = new Question(TypeQuestion.CHECKBOX_QUESTIONS);
-        question1.setContent("Какие из этих языков являются статически типизированными?");
-        Map<Integer, String> answers1 = new HashMap<>(){{
+        Map<Integer, String> answers1 = new HashMap<>() {{
             put(1, "Java");
             put(2, "Python");
             put(3, "C#");
             put(4, "C++");
         }};
+        question1.setAnswers(answers1);
         return question1;
     }
 
-    }
 }

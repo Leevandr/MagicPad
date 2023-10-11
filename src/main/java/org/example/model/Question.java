@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class Question {
     private TypeAnswer typeAnswer;
 
     private String content;
-    private List<String> answer;
+    private Map<Integer, String> answers;
 
     public Question(TypeQuestion typeQuestion) {
         this.typeQuestion = typeQuestion;
@@ -42,7 +42,7 @@ public class Question {
                 "typeQuestion=" + typeQuestion +
                 ", typeAnswer=" + typeAnswer +
                 ", questions=" + content +
-                ", answer=" + answer +
+                ", answer=" + answers.values() +
                 '}';
     }
 }

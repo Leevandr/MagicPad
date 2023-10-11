@@ -3,9 +3,10 @@ package org.example.repository;
 
 import org.example.model.CreatedTest;
 
+import javax.inject.Singleton;
 import java.util.*;
 
-
+@Singleton
 public class CreatedTestRepositoryImpl implements CreatedTestRepository{
 
     private final Map<Long, CreatedTest> createdTests = new HashMap<>();

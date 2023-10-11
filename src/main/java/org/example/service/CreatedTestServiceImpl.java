@@ -1,5 +1,6 @@
 package org.example.service;
 
+import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import org.example.model.CreatedTest;
 import org.example.model.Question;
@@ -15,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-@RequiredArgsConstructor(onConstructor = @__(@javax.inject.Inject))
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CreatedTestServiceImpl implements CreatedTestService {
 
     private final CreatedTestRepository createdTestRepository;
@@ -33,7 +34,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
         validateTimeDuration(createdTest.getTimeDuration());
         validateQuestionsContent(createdTest.getQuestions());
         validateAnswers(createdTest.getQuestions().stream()
-                .flatMap(question -> question.getAnswer().stream())
+                .flatMap(question -> question.getAnswers().values().stream())
                 .collect(Collectors.toList()));
         validateQuestionType(createdTest.getQuestions());
 

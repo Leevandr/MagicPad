@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CreatedTest implements Comparable<CreatedTest> {
 
-    private long id;
+    private final long id;
     private List<Question> questions; // От сюда берем типы ответов и вопросов
     private List<Student> students; // Студенты, которые могут пройти тест
     private boolean isOpen;
