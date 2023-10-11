@@ -1,6 +1,5 @@
 package org.example.service;
 
-import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import org.example.model.CreatedTest;
 import org.example.model.Question;
@@ -8,14 +7,12 @@ import org.example.model.Student;
 import org.example.model.TypeQuestion;
 import org.example.repository.CreatedTestRepository;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 
 
 @RequiredArgsConstructor(onConstructor = @__(@javax.inject.Inject))
@@ -32,7 +29,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
         validateDescription(createdTest.getDescription());
         validateLink(createdTest.getLink());
         validateQuestions(createdTest.getQuestions());
-        validateStudent(createdTest.getStudent());
+        validateStudent(createdTest.getStudents());
         validateTimeDuration(createdTest.getTimeDuration());
         validateQuestionsContent(createdTest.getQuestions());
         validateAnswers(createdTest.getQuestions().stream()
@@ -107,7 +104,6 @@ public class CreatedTestServiceImpl implements CreatedTestService {
             validationTestService.validateQuestionContent(question.getContent(), 255); // Используем 255 как maxLength
         }
     }
-
 
 
     private void validateAnswers(List<String> answers) {

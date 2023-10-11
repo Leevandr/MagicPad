@@ -16,7 +16,7 @@ public class CreatedTest implements Comparable<CreatedTest> {
 
     private long id;
     private List<Question> questions; // От сюда берем типы ответов и вопросов
-    private List<Student> student; // Студенты, которые могут пройти тест
+    private List<Student> students; // Студенты, которые могут пройти тест
     private boolean isOpen;
     private LocalTime timeDuration;
     private String name;
@@ -32,7 +32,7 @@ public class CreatedTest implements Comparable<CreatedTest> {
         return "CreatedTest{" +
                 "id=" + id +
                 ", questions=" + questions +
-                ", student=" + student +
+                ", student=" + students +
                 ", isOpen=" + isOpen +
                 ", timeDuration=" + timeDuration +
                 ", name='" + name + '\'' +
