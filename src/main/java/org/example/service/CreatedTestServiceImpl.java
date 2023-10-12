@@ -44,7 +44,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
     private void validateName(String name) {
         Optional.ofNullable(name)
                 .filter(n -> !n.isBlank() && n.length() >= 3 && n.length() <= 255)
-                .orElseThrow(() -> new IllegalArgumentException("Имя не может быть пустым или содержать больше 255 символов и меньше 3"));
+                .orElseThrow(() -> new IllegalArgumentException("Iмя не может быть пустым или содержать больше 255 символов и меньше 3"));
     }
 
     private void validateDescription(String description) {
@@ -102,7 +102,7 @@ public class CreatedTestServiceImpl implements CreatedTestService {
 
     private void validateQuestionsContent(List<Question> questionsList) {
         for (Question question : questionsList) {
-            validationTestService.validateQuestionContent(question.getContent(), 255); // Используем 255 как maxLength
+            validationTestService.validateQuestionContent(question.getContent(), 255);
         }
     }
 

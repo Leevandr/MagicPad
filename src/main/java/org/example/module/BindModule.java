@@ -16,5 +16,6 @@ public class BindModule extends AbstractModule {
         bind(CreatedTestService.class).to(CreatedTestServiceImpl.class);
         bind(CreatedTestRepository.class).to(CreatedTestRepositoryImpl.class);
         bind(ValidationTestService.class).to(ValidationTestServiceImpl.class);
+
     }
 }

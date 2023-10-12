@@ -29,7 +29,10 @@ public class Main {
         // Создаем тест
         CreatedTest createdTest = new CreatedTest(1, List.of(question1()), List.of(student), true, LocalTime.of(1, 30), "test", "123123", "12312313", 123);
         System.out.println(createdTest);
+
+
     }
+    
 
 
     public static Question question1() {

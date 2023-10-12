@@ -1,19 +1,28 @@
+
 plugins {
     id 'java'
+    id "org.openapi.generator" version "6.0.0"
 }
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    sourceCompatibility = targetCompatibility = "17"
-}
+//tasks.withType(JavaCompile).configureEach {
+//    options.encoding = "UTF-8"
+//    sourceCompatibility = targetCompatibility = "17"
+//}
 
 
 repositories {
     mavenCentral()
 }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+var koraVersion = '0.10.1'
 
 ext {
     guiceVersion = '7.0.0'
@@ -24,9 +33,19 @@ dependencies {
 
     implementation 'javax.inject:javax.inject:1'
     implementation "com.google.inject:guice:$guiceVersion"
+    implementation platform("ru.tinkoff.kora:kora-parent:$koraVersion")
+    implementation "ru.tinkoff.kora:http-server-undertow"
+    implementation "ru.tinkoff.kora:json-module"
+    implementation "ru.tinkoff.kora:micrometer-module"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    annotationProcessor "ru.tinkoff.kora:annotation-processors:$koraVersion"
 }
+
+
+
+
 
 
 
