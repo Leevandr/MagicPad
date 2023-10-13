@@ -1,16 +1,12 @@
 
 plugins {
     id 'java'
-    id "org.openapi.generator" version "6.0.0"
+    id 'org.springframework.boot' version '2.7.1'
+    id 'io.spring.dependency-management' version '1.1.3'
 }
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
-
-//tasks.withType(JavaCompile).configureEach {
-//    options.encoding = "UTF-8"
-//    sourceCompatibility = targetCompatibility = "17"
-//}
 
 
 repositories {
@@ -22,25 +18,17 @@ java {
     }
 }
 
-var koraVersion = '0.10.1'
-
 ext {
     guiceVersion = '7.0.0'
-    lombokVersion = "1.18.30"
 }
 
 dependencies {
-
     implementation 'javax.inject:javax.inject:1'
     implementation "com.google.inject:guice:$guiceVersion"
-    implementation platform("ru.tinkoff.kora:kora-parent:$koraVersion")
-    implementation "ru.tinkoff.kora:http-server-undertow"
-    implementation "ru.tinkoff.kora:json-module"
-    implementation "ru.tinkoff.kora:micrometer-module"
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
-    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
-    annotationProcessor "ru.tinkoff.kora:annotation-processors:$koraVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 
