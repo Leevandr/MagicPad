@@ -1,16 +1,16 @@
 package org.example.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 
-@Entity
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 public class CreatedTest implements Comparable<CreatedTest> {
 

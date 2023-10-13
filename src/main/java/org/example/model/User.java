@@ -1,13 +1,12 @@
 package org.example.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-
-@Entity
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 public class User {
     private final long id;

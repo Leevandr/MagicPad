@@ -1,15 +1,17 @@
 package org.example.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
 import java.util.Map;
 
-@Entity
-@Data
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 public class Question {
+
+
     private TypeQuestion typeQuestion;
     private TypeAnswer typeAnswer;
 
