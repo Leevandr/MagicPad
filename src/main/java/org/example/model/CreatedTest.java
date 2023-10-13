@@ -1,16 +1,16 @@
 package org.example.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 
-@Getter
-@Setter
+@Entity
+@Data
+@Builder
 @AllArgsConstructor
 public class CreatedTest implements Comparable<CreatedTest> {
 
@@ -24,7 +24,6 @@ public class CreatedTest implements Comparable<CreatedTest> {
     private String description;
     private final long teacherId;
     private final LocalDateTime createdDate = LocalDateTime.now();
-
 
 
     @Override
